@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Educativa - Universidad Autónoma</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="importmap">
+      {
+        "imports": {
+          "./data.js": "./data.js"
+        }
+      }
+    </script>
+</head>
+<body>
+    <div id="app-container">
+        <!-- Vista de Inicio de Sesión -->
+        <div id="login-view" class="view active">
+            <div class="auth-header">
+                <img src="logoau.png" alt="Universidad Logo" class="university-logo">
+                <h1>Plataforma Educativa Universidad Autónoma</h1>
+            </div>
+            <div class="card auth-card">
+                <h2><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</h2>
+                <p>Accede con tu cuenta institucional</p>
+                <div class="input-group">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="email-input" placeholder="usuario@autonoma.edu.pe">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password-input" placeholder="Contraseña">
+                </div>
+                <div class="role-selector" style="display: none;">
+                    <label>
+                        <input type="radio" name="role" value="student" checked> <span>Estudiante</span>
+                    </label>
+                </div>
+                <p id="login-error" class="error-message"></p>
+                <button id="login-button" class="primary-button">Ingresar</button>
+                <p class="auth-link">¿No tienes cuenta? <a href="#" id="register-link">Regístrate aquí</a></p>
+                <p class="small-note">Nota: Para fines de demostración, utlizar: estudiante@autonoma.edu.pe / estudiante123</p>
+            </div>
+            <div class="theme-toggle">
+                <button id="theme-toggle-btn" class="theme-toggle-btn">
+                    <i class="fas fa-moon"></i>
+                    <span>Modo oscuro</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Vista de Registro -->
+        <div id="register-view" class="view">
+            <div class="auth-header">
+                <img src="logoau.png" alt="Universidad Logo" class="university-logo">
+                <h1>Plataforma Educativa Universidad Autónoma</h1>
+            </div>
+            <div class="card auth-card">
+                <h2><i class="fas fa-user-plus"></i> Crear Cuenta</h2>
+                <p>Regístrate con tu correo institucional</p>
+                <form id="register-form">
+                    <div class="input-group">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="register-name-input" placeholder="Nombre completo">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="register-email-input" placeholder="usuario@autonoma.edu.pe">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="register-password-input" placeholder="Contraseña">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="register-confirm-password-input" placeholder="Confirmar contraseña">
+                    </div>
+                    <div class="role-selector" style="display: none;">
+                        <label>
+                            <input type="radio" name="register-role" value="student" checked> <span>Estudiante</span>
+                        </label>
+                    </div>
+                    <p id="register-error" class="error-message"></p>
+                    <button type="button" id="register-button" class="primary-button">Registrarse</button>
+                </form>
+                <p class="auth-link">¿Ya tienes cuenta? <a href="#" id="login-link">Inicia sesión</a></p>
+            </div>
+            <div class="theme-toggle">
+                <button id="register-theme-toggle-btn" class="theme-toggle-btn">
+                    <i class="fas fa-moon"></i>
+                    <span>Modo oscuro</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Vista de Selección de Cursos -->
+        <div id="course-selection-view" class="view">
+            <div class="app-header">
+                <div class="header-content">
+                    <h2><i class="fas fa-graduation-cap"></i> Plataforma Educativa</h2>
+                    <div class="user-info">
+                        <span id="user-name-display"></span>
+                        <span id="user-email-display"></span>
+                        <div class="user-actions">
+                            <button id="theme-toggle-main" class="small-button theme-btn">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                            <button id="logout-button" class="small-button"><i class="fas fa-sign-out-alt"></i> Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-container">
+                <h3><i class="fas fa-book"></i> Mis Cursos</h3>
+                <div id="course-list" class="course-grid">
+                    <!-- Los cursos se cargarán aquí mediante JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Vista de Selección de Temas -->
+        <div id="topic-selection-view" class="view">
+            <div class="app-header">
+                <div class="header-content">
+                    <h2 id="current-course-title"><i class="fas fa-book"></i> Curso Actual</h2>
+                    <div class="user-info">
+                        <span id="topic-user-name"></span>
+                        <span id="topic-user-email"></span>
+                        <div style="display: flex; gap: 10px;">
+                            <button id="theme-toggle-topics" class="small-button theme-btn">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                            <button id="back-to-courses-button" class="small-button"><i class="fas fa-arrow-left"></i> Volver a Cursos</button>
+                            <button id="topic-logout-button" class="small-button"><i class="fas fa-sign-out-alt"></i> Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-container">
+                <div class="course-info-card">
+                    <div class="course-header">
+                        <div class="course-icon">
+                            <i id="course-icon" class="fas fa-book"></i>
+                        </div>
+                        <div class="course-details">
+                            <h3 id="course-name">Nombre del Curso</h3>
+                            <p id="course-description">Descripción del curso</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-list-ul"></i> Temas del Curso</h3>
+                <div id="topic-list" class="card topic-list-card">
+                    <!-- Los temas se cargarán aquí mediante JS -->
+                </div>
+
+                <!-- Sección para editar sílabo (solo visible para profesores) -->
+                <div id="syllabus-editor" class="syllabus-editor" style="display: none;">
+                    <h3><i class="fas fa-edit"></i> Editar Sílabo</h3>
+                    <div class="card">
+                        <div class="input-group">
+                            <label for="edit-course-description">Descripción del Curso:</label>
+                            <textarea id="edit-course-description" rows="3" placeholder="Ingrese una descripción detallada del curso..."></textarea>
+                        </div>
+                        
+                        <h4 style="margin: 20px 0 15px; color: var(--primary-color);"><i class="fas fa-list-alt"></i> Temas del Sílabo</h4>
+                        <div id="topics-editor" class="topic-edit-container">
+                            <!-- Aquí se cargarán los temas para editar -->
+                        </div>
+                        
+                        <div class="editor-actions">
+                            <button id="add-topic-button" class="secondary-button"><i class="fas fa-plus"></i> Añadir Semana</button>
+                            <button id="save-syllabus-button" class="primary-button"><i class="fas fa-save"></i> Guardar Cambios</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vista de Chat -->
+        <div id="chat-view" class="view">
+            <div class="app-header">
+                <div class="header-content">
+                    <h2 id="chat-topic-title"></h2>
+                    <div class="header-actions">
+                        <button id="theme-toggle-chat" class="small-button theme-btn">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <button id="chat-back-button" class="small-button"><i class="fas fa-arrow-left"></i> Volver a Temas</button>
+                    </div>
+                </div>
+            </div>
+            <div class="content-container">
+                <div class="card chat-container">
+                    <h3><i class="fas fa-comments"></i> Repaso Interactivo del Tema</h3>
+                    <div id="chat-messages">
+                        <!-- Los mensajes del chat aparecerán aquí -->
+                        <div class="message system-message">
+                            <p>Hola! Soy tu asistente para este curso. Puedes preguntarme sobre el resumen del tema a continuación o cualquier duda que tengas sobre <strong id="chat-topic-context"></strong>.</p>
+                        </div>
+                        <div class="message system-message">
+                            <strong>Resumen:</strong>
+                            <p id="topic-summary"></p>
+                        </div>
+                    </div>
+                    <div id="chat-input-area">
+                        <textarea id="chat-input" placeholder="Escribe tu pregunta aquí..."></textarea>
+                        <button id="send-chat-button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                    <div id="chat-loading" class="loading-indicator" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Pensando...
+                    </div>
+                    <p id="chat-error" class="error-message"></p>
+                    <button id="start-quiz-button" class="primary-button"><i class="fas fa-tasks"></i> Iniciar Preguntas</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz View -->
+        <div id="quiz-view" class="view">
+            <div class="app-header">
+                <div class="header-content">
+                    <h2 id="quiz-topic-title"></h2>
+                    <div id="timer"><i class="fas fa-clock"></i> Tiempo restante: 15:00</div>
+                </div>
+            </div>
+            <div class="content-container">
+                <div class="card quiz-content">
+                    <h3><i class="fas fa-question-circle"></i> Evaluación de Conocimientos</h3>
+                    <div id="unanswered-warning" class="warning-message" style="display: none;">
+                        <i class="fas fa-exclamation-triangle"></i> Hay preguntas sin responder. Por favor, completa todas las preguntas.
+                    </div>
+                    <form id="quiz-form">
+                        <!-- Las preguntas se cargarán aquí mediante JS -->
+                    </form>
+                    <button id="submit-quiz-button" class="primary-button"><i class="fas fa-check-circle"></i> Finalizar Intento</button>
+                    <p id="quiz-message" class="error-message"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vista de Resultados -->
+        <div id="results-view" class="view">
+            <div class="app-header">
+                <div class="header-content">
+                    <h2>Resultados del Quiz</h2>
+                    <button id="theme-toggle-results" class="small-button theme-btn">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="content-container">
+                <div class="card results-content">
+                    <h3 id="results-topic-title"></h3>
+                    <div class="score-container">
+                        <i class="fas fa-award"></i>
+                        <p>Tu puntuación: <span id="score"></span></p>
+                    </div>
+                    </div>
+                    <div id="results-details">
+                        <!-- Los resultados detallados se cargarán aquí mediante JS -->
+                    </div>
+                    <h3><i class="fas fa-lightbulb"></i> Recomendaciones:</h3>
+                    <p id="recommendations"></p>
+                    <div class="results-actions">
+                        <button id="try-again-button" class="secondary-button"><i class="fas fa-redo"></i> Volver a Intentar</button>
+                        <button id="results-back-button" class="primary-button"><i class="fas fa-list"></i> Seleccionar Otro Tema</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
